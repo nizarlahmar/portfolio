@@ -20,4 +20,5 @@ Thumbs.db
 .env.*
 
 # Obsidian files
+.obsidian/
 _posts/.obsidian
