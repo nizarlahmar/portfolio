@@ -2,7 +2,7 @@
 title: "Writeup: Blocky on HTB"
 layout: blog
 categories:
-  - writeups
+  - write-ups
   - htb
   - blocky
 ---

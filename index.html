@@ -118,14 +118,49 @@
 
     .theme-toggle:hover { color: var(--text); border-color: var(--muted); }
 
-    nav {
-      display: flex;
-      gap: 0;
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    nav::-webkit-scrollbar { display: none; }
+    .nav-wrap {
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-wrap::before,
+.nav-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 52px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1;
+}
+
+.nav-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg), transparent);
+}
+
+.nav-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg), transparent);
+}
+
+.nav-wrap.can-left::before  { opacity: 1; }
+.nav-wrap.can-right::after  { opacity: 1; }
+
+nav {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  cursor: grab;
+}
+
+nav.dragging { cursor: grabbing; scroll-behavior: auto; }
+nav::-webkit-scrollbar { display: none; }
 
     .tab {
       background: none;
@@ -551,16 +586,17 @@
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">Light Mode</button>
     </header>
 
-    <nav id="nav">
-  <button class="tab active" data-target="about">About</button>
-  <button class="tab" data-target="skills">Skills &amp; Certs</button>
-  <button class="tab" data-target="projects">Projects</button>
-  <button class="tab" data-target="blog">Write-ups / Blog</button>
-  <button class="tab" data-target="profiles">Profiles</button>
-  <button class="tab" data-target="more">More</button>
-  <button class="tab" data-target="contact">Contact</button>
-</nav>
-
+    <div class="nav-wrap" id="navWrap">
+  <nav id="nav">
+    <button class="tab active" data-target="about">About</button>
+    <button class="tab" data-target="skills">Skills &amp; Certs</button>
+    <button class="tab" data-target="projects">Projects</button>
+    <button class="tab" data-target="blog">Write-ups / Blog</button>
+    <button class="tab" data-target="profiles">Profiles</button>
+    <button class="tab" data-target="more">More</button>
+    <button class="tab" data-target="contact">Contact</button>
+  </nav>
+</div>
     <!-- ABOUT -->
     <section class="section active" id="about">
       <div class="sec-label">// about</div>
@@ -732,7 +768,7 @@
       <div class="project">
         <div class="project-header">
           <div class="project-title">SOC Detection Lab</div>
-          <a class="project-link" href="https://github.com/nizarlahmar/soc-lab" target="_blank" rel="noopener">writeup ↗</a>
+          <a class="project-link" href="https://github.com/nizarlahmar/soc-lab" target="_blank" rel="noopener">write-up ↗</a>
         </div>
         <div class="project-desc">
           Multi-VM homelab running Wazuh SIEM with custom detection rules mapped to MITRE ATT&amp;CK.
@@ -771,7 +807,7 @@
 
       <div class="project">
         <div class="project-header">
-          <div class="project-title">HTB / CTF Writeups</div>
+          <div class="project-title">HTB / CTF Write-ups</div>
           <a class="project-link" href="#" target="_blank" rel="noopener">read ↗</a>
         </div>
         <div class="project-desc">
@@ -996,15 +1032,69 @@
     const toggle = document.getElementById('themeToggle');
     const html = document.documentElement;
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const target = tab.dataset.target;
-        tabs.forEach(t => t.classList.remove('active'));
-        sections.forEach(s => s.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(target).classList.add('active');
-      });
-    });
+    const navWrap = document.getElementById('navWrap');
+const nav = document.getElementById('nav');
+
+function updateFades() {
+  const max = nav.scrollWidth - nav.clientWidth;
+  navWrap.classList.toggle('can-left', nav.scrollLeft > 2);
+  navWrap.classList.toggle('can-right', nav.scrollLeft < max - 2);
+}
+
+nav.addEventListener('scroll', updateFades, { passive: true });
+window.addEventListener('resize', updateFades);
+updateFades();
+
+// trackpad / mouse wheel scrolls horizontally
+nav.addEventListener('wheel', (e) => {
+  if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+  if (nav.scrollWidth <= nav.clientWidth) return;
+  e.preventDefault();
+  nav.scrollLeft += e.deltaY;
+}, { passive: false });
+
+// click-and-drag (mouse only — touch already scrolls natively)
+let down = false, startX = 0, startScroll = 0, dragged = 0;
+
+nav.addEventListener('pointerdown', (e) => {
+  if (e.pointerType !== 'mouse') return;
+  down = true;
+  dragged = 0;
+  startX = e.clientX;
+  startScroll = nav.scrollLeft;
+  nav.classList.add('dragging');
+});
+
+nav.addEventListener('pointermove', (e) => {
+  if (!down) return;
+  const dx = e.clientX - startX;
+  dragged = Math.max(dragged, Math.abs(dx));
+  nav.scrollLeft = startScroll - dx;
+});
+
+['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
+  nav.addEventListener(ev, () => {
+    down = false;
+    nav.classList.remove('dragging');
+  })
+);
+
+function centerTab(tab) {
+  const left = tab.offsetLeft - (nav.clientWidth - tab.offsetWidth) / 2;
+  nav.scrollTo({ left, behavior: 'smooth' });
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    if (dragged > 5) return; // it was a drag, not a click
+    const target = tab.dataset.target;
+    tabs.forEach(t => t.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(target).classList.add('active');
+    centerTab(tab);
+  });
+});
 
     toggle.addEventListener('click', () => {
       const isDark = html.getAttribute('data-theme') === 'dark';
