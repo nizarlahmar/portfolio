@@ -59,9 +59,8 @@ The credentials got me administrative privileges for phpMyAdmin, and this allowe
 
 In practice, I do think it's reasonable to try out a limited but encompassing dictionary attack against exposed usernames, if only as a background task. In this case, for instance, I could've used `wpscan` to do so.
 
-That said, the path of least resistance is to simply change the password through phpMyAdmin itself. 
+That said, the path of least resistance is to simply change the password through phpMyAdmin itself.
 
-> [!info] 
 > When changing the password, ensure it's stored as a PHPass hash (by choosing MD5 in the Function drop-down menu on phpMyAdmin). 
 
 After a few minutes, we can log into WordPress through the `notch` user who happens to have administrative privileges. Surprisingly, however, this didn't immediately lead to anything fruitful like a shell, given that some usually-exploitable avenues like plugins weren't useful this time around.
