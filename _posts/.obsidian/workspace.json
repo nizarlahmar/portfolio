@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2026-07-02-ejpt-experience.md",
+                "file": "2026-07-02-htb-blocky.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026-07-02-ejpt-experience"
+              "title": "2026-07-02-htb-blocky"
             }
           }
         ]
@@ -41,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -78,7 +80,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 257.1363830566406
   },
   "right": {
     "id": "9c6fd89854715e78",
@@ -94,7 +96,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2026-07-02-ejpt-experience.md",
+                "file": "2026-07-02-htb-blocky.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +106,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 2026-07-02-ejpt-experience"
+              "title": "Backlinks"
             }
           },
           {
@@ -156,21 +158,31 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026-07-02-ejpt-experience.md",
+                "file": "2026-07-02-htb-blocky.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2026-07-02-ejpt-experience"
+              "title": "Outline"
+            }
+          },
+          {
+            "id": "5253a5a2db5cb16f",
+            "type": "leaf",
+            "state": {
+              "type": "side-panel-control-view",
+              "state": {},
+              "icon": "viewIcon",
+              "title": "Markdown-Autocomplete"
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -180,11 +192,16 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "obsidian-markdown-formatting-assistant-plugin:Open Markdown Formatting Assistant": false
     }
   },
   "active": "88f807786c9008fd",
   "lastOpenFiles": [
-    "2026-07-02-ejpt-experience.md"
+    "2026-07-02-ejpt-experience.md",
+    "Images",
+    "Images/blockycore.jar file.png",
+    "Images/blockycraft site.png",
+    "2026-07-02-htb-blocky.md"
   ]
 }
