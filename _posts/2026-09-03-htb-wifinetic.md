@@ -29,7 +29,7 @@ PORT   STATE SERVICE
 53/tcp open  domain
 ```
 
-Digging a bit deeper, we find that the FTP server is `vsFTPd 3.0.3` which isn't immediately exploitable (after a while of checking service versions, you can come to memorize which ones have public CVEs; for instance, version `3.0.3` in this case is merely subsceptible to DoS attacks).
+Digging a bit deeper, we find that the FTP server is `vsFTPd 3.0.3` which isn't immediately exploitable (after a while of checking service versions, you can come to memorize which ones have public CVEs; for instance, version `3.0.3` in this case is merely susceptible to DoS attacks).
 
 Logging anonymously into FTP was successful, and several files were available to download. It seems like the target company in question is looking to migrate to Debian from OpenWrt.
 
@@ -38,7 +38,7 @@ Logging anonymously into FTP was successful, and several files were available to
 The most fruitful file turned out to be `backup-OpenWrt-2023-07-26.tar`, since once its contents were extracted, they revealed a seemingly old or incomplete version of the target system's `/etc/` folder, including a `passwd` file.
 Through this file, I was able to identify a user on the system called `netadmin`.
 
-Inside the same folder, there's another directory called `config` which houses a file called `wireless`. Ita contained what seems to be a WiFi password for a corresponding access point.
+Inside the same folder, there's another directory called `config` which houses a file called `wireless`. It contained what seems to be a WiFi password for a corresponding access point.
 
 ![[wifi passwords.png|269]]
 
@@ -50,7 +50,7 @@ This netted me the User flag.
 
 # Privilege Escalation
 
-This box is evidently geared towards wireless attacks, so some wireless reconaissance is in order. My first go-to tool for this is `iw`.
+This box is evidently geared towards wireless attacks, so some wireless reconnaissance is in order. My first go-to tool for this is `iw`.
 
 `iw dev` reveals a couple interesting interfaces, one of which, `mon0`, can be used to carry out wireless attacks given that it's set to `monitor` mode.
 
@@ -82,4 +82,4 @@ And thus, Wifinetic was hacked!
 
 A decent amount of other information could've been gathered, like emails, by reading the other files accessible via FTP (you can download all of them via `mget *` by the way).
 
-I don't always cover this extra information given that my CTF write-ups are (typically) centered around the direct path towards finding the flag, as opposed to thoroughly toying with the target. But do take note that if this were to be a real pen-test, you'd enumerate a lot more information about the target, instead of hyper-focusing on a `.txt` file.
+I don't always cover this extra information given that my CTF write-ups are (typically) centered around the direct path towards finding the flag, as opposed to thoroughly toying with the target. But do take note that if this were to be a real pen-test, you'd enumerate a lot more information about the target instead of hyper-focusing on a `.txt` file.
