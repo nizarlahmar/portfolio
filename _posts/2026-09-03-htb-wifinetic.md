@@ -1,5 +1,5 @@
 ---
-title: "Writeup: Wifinetic on HTB"
+title: "Write-up: Wifinetic on HTB"
 layout: blog
 categories:
   - write-ups

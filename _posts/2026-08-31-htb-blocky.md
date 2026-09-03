@@ -1,5 +1,5 @@
 ---
-title: "Writeup: Blocky on HTB"
+title: "Write-up: Blocky on HTB"
 layout: blog
 categories:
   - write-ups
@@ -8,7 +8,7 @@ categories:
 ---
 In today's write-up, I'm covering the HackTheBox machine called 'Blocky'.
 
-DISCLAIMER: This write-up does not include User/Root flags, nor does it reveal helpful information like credentials. That said, following it will directly guide you to fully owning the target machine.
+**DISCLAIMER**: This write-up does not include User/Root flags, nor does it reveal helpful information like credentials. That said, following it will directly guide you to fully owning the target machine.
 
 # Why I Chose It
 
